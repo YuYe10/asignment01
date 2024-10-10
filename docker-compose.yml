@@ -1,0 +1,43 @@
+services:
+  master:
+    image: ${IMAGE}
+    ports:
+      - "6380:6380"
+      - "8265:8265"
+      - ${CLIENT_PORT}:${CLIENT_PORT}
+    shm_size: 2g
+    networks:
+      - ray-network
+    env_file:
+      - .env
+    entrypoint: "ray start --head --port 6380 --dashboard-host 0.0.0.0 --redis-password=${REDIS_PASSWORD} --block"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "2g"
+
+  node:
+    image: ${IMAGE}
+    shm_size: 2g
+    networks:
+      - ray-network
+    env_file:
+      - .env
+    entrypoint: "ray start --address=master:6380 --num-cpus=${NUM_CPU_WORKER} --redis-password=${REDIS_PASSWORD} --block"
+    deploy:
+      mode: replicated
+      replicas: ${NUM_WORKERS}
+      resources:
+        limits:
+          cpus: ${NUM_CPU_WORKER}
+          memory: "2g"
+    depends_on:
+      - master
+
+networks:
+  ray-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.63.0.0/16
