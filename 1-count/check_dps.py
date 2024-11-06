@@ -21,7 +21,7 @@ if __name__ == "__main__":
     client_port = os.getenv("CLIENT_PORT")
 
     # Step1: Connect to the Ray cluster
-    ray.init(address='', _temp_dir=None, ignore_reinit_error=True)
+    ray.init(address='auto', _temp_dir=None, ignore_reinit_error=True)
     # Step3: Generate a list with 100 `get_host` tasks
     tasks = [get_host.remote() for _ in range(100)]
     # Step4: Get the IP addresses of the machines that executed the tasks
