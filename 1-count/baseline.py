@@ -3,7 +3,6 @@ import time
 ##############  You can't change here  ##############
 addition_times: int = 500_000_000 - 3
 
-
 def add(num: int) -> int:
     return num + 1
 

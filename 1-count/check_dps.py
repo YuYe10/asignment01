@@ -8,10 +8,10 @@ from dotenv import load_dotenv
 
 
 # Step2: Define the remote `get_host` function
-@ray.remote
-def get_host():
-    time.sleep(0.001)
-    return socket.gethostbyname(socket.gethostname())
+@ray.remote  
+def get_host():    
+    ip_address = socket.gethostbyname(socket.gethostname()) 
+    return ip_address  
 
 
 if __name__ == "__main__":
@@ -21,9 +21,10 @@ if __name__ == "__main__":
     client_port = os.getenv("CLIENT_PORT")
 
     # Step1: Connect to the Ray cluster
-    ray.init(address='auto', _temp_dir=None, ignore_reinit_error=True)
+    ray.init(address="auto")
     # Step3: Generate a list with 100 `get_host` tasks
-    tasks = [get_host.remote() for _ in range(100)]
+    num_tasks = 100  
+    tasks = [get_host.remote() for _ in range(num_tasks)]
     # Step4: Get the IP addresses of the machines that executed the tasks
     ip_addresses = ray.get(tasks)
 

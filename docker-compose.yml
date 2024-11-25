@@ -5,7 +5,7 @@ services:
       - "6380:6380"
       - "8265:8265"
       - ${CLIENT_PORT}:${CLIENT_PORT}
-    shm_size: 2g
+    shm_size: 8g
     networks:
       - ray-network
     env_file:
@@ -15,11 +15,11 @@ services:
       resources:
         limits:
           cpus: "1"
-          memory: "2g"
+          memory: "8g"
 
   node:
     image: ${IMAGE}
-    shm_size: 2g
+    shm_size: 1g
     networks:
       - ray-network
     env_file:
@@ -31,7 +31,7 @@ services:
       resources:
         limits:
           cpus: ${NUM_CPU_WORKER}
-          memory: "2g"
+          memory: "1g"
     depends_on:
       - master
 
