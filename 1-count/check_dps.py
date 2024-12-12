@@ -27,7 +27,9 @@ if __name__ == "__main__":
     tasks = [get_host.remote() for _ in range(num_tasks)]
     # Step4: Get the IP addresses of the machines that executed the tasks
     ip_addresses = ray.get(tasks)
-
+    """ print(tasks)
+    print("\n")
+    print(ip_addresses) """
     print("Tasks executed")
     for ip_address, num_tasks in Counter(ip_addresses).items():
         print(f"    {ip_address} tasks on {num_tasks}")

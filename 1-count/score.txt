@@ -1,2 +1,2 @@
 baseline: 35.11s
-count:
+count: 8.84s(batch处理，原始资源) 
