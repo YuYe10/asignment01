@@ -3,46 +3,51 @@ import ray
 ##############  You can't change here  ##############
 addition_times: int = 500_000_000 - 3
 
+
 def add(num: int) -> int:
     return num + 1
 
 
 ######################################################
+'''Reference from GPT-4o'''
 
-@ray.remote
-def add_batch_remote(start: int, count: int) -> int:
-    """Perform a batch of additions."""
-    result = start
-    for _ in range(count):
+
+@ray.remote(num_cpus=2)
+def add_batch(num: int, batch_size: int) -> int:
+    result = num
+    for _ in range(batch_size):
         result = add(result)
     return result
 
+
+'''Reference from GPT-4o'''
 if __name__ == "__main__":
     print("arranging the worker...")
     ray.init()
-    start_time = time.time()
+    num_time = time.time()
     print("start to calculating...")
-  
-    # Define batch size
-    batch_size = 10_000_00  # Number of additions per batch
+    '''Reference from GPT-4o'''
+    # 定义一轮要执行的任务数
+    batch_size = 10_000_00
     result = 0
     remaining_additions = addition_times
 
-    # List to store futures
+    # 创建futures列表
     futures = []
 
-    # Break the computation into batches
     while remaining_additions > 0:
-        current_batch_size = min(batch_size, remaining_additions)
-        futures.append(add_batch_remote.remote(result, current_batch_size))
-        result += current_batch_size  # Update `result` locally to keep track
-        remaining_additions -= current_batch_size
+        # 由于 addition_times 不一定是 batch_size 的倍数，最后一批可能会小于 batch_size，因此在每次循环中动态调整 current_size
+        current_size = min(batch_size, remaining_additions)
+        futures.append(add_batch.remote(result, current_size))
+        result += current_size  # Update `result` locally to keep track
+        remaining_additions -= current_size
 
-    # Wait for all tasks to complete (if any parallelism was applied)
+    #等待所有任务完成
     ray.get(futures)
 
-    
+    '''Reference from GPT-4o'''
+
     end_time = time.time()
-    print(f"Time: {end_time - start_time:.2f}s")
+    print(f"Time: {end_time - num_time:.2f}s")
     print(f"Result Is Accepted: {result == addition_times}")
-#bash: RAY_ADDRESS='http://127.0.0.1:8265' ray job submit --working-dir . -- python count.py
+# bash: RAY_ADDRESS='http://127.0.0.1:8265' ray job submit --working-dir . -- python count.py

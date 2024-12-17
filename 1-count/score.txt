@@ -1,2 +1,5 @@
 baseline: 35.11s
-count: 8.84s(batch处理，原始资源) 
+count: 43.59s (batch_size = 10_000_000, 原始资源) 
+count: 21.69s (batch_size = 10_000_000, 原始资源, wait处理, 指定资源)
+count: 10.10s (batch_size = 10_000_000, 原始资源, wait处理)
+count: 9.94s (batch_size = 10_000_00, 原始资源, wait处理)

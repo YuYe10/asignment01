@@ -1,1 +1,0 @@
-RAY_ADDRESS='http://127.0.0.1:8265' ray job submit --working-dir . -- python count.py

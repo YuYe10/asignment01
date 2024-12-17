@@ -2,7 +2,7 @@ import ray.data
 import numpy as np
 from pyarrow import float64, int64
 
-ds = ray.data.read_csv("output.csv.gz", arrow_open_stream_args={"compression": "gzip"})
+ds = ray.data.read_csv("transformed.csv.gz", arrow_open_stream_args={"compression": "gzip"})
 
 cols = ["apple", "banana", "orange", "total_price", "grape", "site_id"]
 

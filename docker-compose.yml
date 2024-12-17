@@ -24,7 +24,7 @@ services:
       - ray-network
     env_file:
       - .env
-    entrypoint: "ray start --address=master:6380 --num-cpus=${NUM_CPU_WORKER} --redis-password=${REDIS_PASSWORD} --include-dashboard=true --block"
+    entrypoint: "ray start --address=master:6380 --num-cpus=${NUM_CPU_WORKER} --redis-password=${REDIS_PASSWORD} --block"
     deploy:
       mode: replicated
       replicas: ${NUM_WORKERS}

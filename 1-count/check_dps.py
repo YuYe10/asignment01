@@ -33,3 +33,4 @@ if __name__ == "__main__":
     print("Tasks executed")
     for ip_address, num_tasks in Counter(ip_addresses).items():
         print(f"    {ip_address} tasks on {num_tasks}")
+#bash: RAY_ADDRESS='http://127.0.0.1:8265' ray job submit --working-dir . -- python count.py
