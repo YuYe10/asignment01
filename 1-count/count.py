@@ -14,10 +14,10 @@ def add(num: int) -> int:
 
 @ray.remote(num_cpus=2)
 def add_batch(num: int, batch_size: int) -> int:
-    result = num
+    result_i = num
     for _ in range(batch_size):
-        result = add(result)
-    return result
+        result_i = add(result_i)
+    return result_i
 
 
 '''Reference from GPT-4o'''
@@ -39,10 +39,10 @@ if __name__ == "__main__":
         # 由于 addition_times 不一定是 batch_size 的倍数，最后一批可能会小于 batch_size，因此在每次循环中动态调整 current_size
         current_size = min(batch_size, remaining_additions)
         futures.append(add_batch.remote(result, current_size))
-        result += current_size  # Update `result` locally to keep track
+        result += current_size  # 更新本地'result'以保证结果被接受
         remaining_additions -= current_size
 
-    #等待所有任务完成
+    #等待所有任务完成执行ray.get()
     ray.get(futures)
 
     '''Reference from GPT-4o'''
