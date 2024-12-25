@@ -42,7 +42,7 @@ if __name__ == "__main__":
         result += current_size  # 更新本地'result'以保证结果被接受
         remaining_additions -= current_size
 
-    #等待所有任务完成执行ray.get()
+    #等待所有任务完成执行ray.get()(阻塞)
     ray.get(futures)
 
     '''Reference from GPT-4o'''
